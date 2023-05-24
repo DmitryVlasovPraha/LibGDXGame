@@ -3,14 +3,14 @@ package com.mygdx.drop.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.mygdx.drop.Drop;
+import com.mygdx.drop.ZBGame;
 
 public class HtmlLauncher extends GwtApplication {
 
         @Override
         public GwtApplicationConfiguration getConfig ()
         {
-                  return new GwtApplicationConfiguration(800, 480);
+                  return new GwtApplicationConfiguration(480, 320);
 
 
                 // Resizable application, uses available space in browser
@@ -21,6 +21,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new Drop();
+                return new ZBGame() {};
         }
 }
