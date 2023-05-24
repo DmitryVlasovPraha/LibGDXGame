@@ -5,18 +5,30 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.drop.gameworld.GameRenderer;
 import com.mygdx.drop.gameworld.GameWorld;
+import com.mygdx.drop.zbhelpers.InputHandler;
 
 public class GameScreen implements Screen {
 
     private GameWorld world;
     private GameRenderer renderer;
 
+    private float runTime;
+
     public GameScreen() {
 
-        Gdx.app.log("GameScreen", "Attached");
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+        float gameWidth = 136;
+        float gameHeight = screenHeight / (screenWidth / gameWidth);
 
-        world = new GameWorld(); // initialize world
-        renderer = new GameRenderer(world); // initialize renderer. Наш GameRenderer должен иметь доступ к GameWorld
+        int midPointY = (int) (gameHeight / 2);
+
+        world = new GameWorld(midPointY);
+
+        renderer = new GameRenderer(world, (int) gameHeight, midPointY);
+
+        Gdx.input.setInputProcessor(new InputHandler(world.getBird()));
+
 
     }
 
@@ -27,19 +39,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-        // Мы передаем delta в update метод, для того, чтобы мы могли сделать фреймо-зависимые вычисления
-        world.update(delta); // GameWorld updates
-        renderer.render(); // GameRenderer renders
-
-       /* // установим цвет бэкграцнда нашего экрана (RGB = 10, 15, 230), с прозрачностью 1 (100%)
-        Gdx.gl.glClearColor(10/255.0f, 15/255.0f, 230/255.0f, 1f);
-
-        // заполним экран указанным цветом
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // выведем в консоль количество кадров в секунду
-        Gdx.app.log("GameScreen FPS", (1/delta) + "");*/
+        runTime += delta;
+        world.update(delta);
+        renderer.render(runTime);
     }
 
     @Override

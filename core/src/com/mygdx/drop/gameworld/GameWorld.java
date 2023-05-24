@@ -1,24 +1,44 @@
 package com.mygdx.drop.gameworld;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Rectangle;
+
+
+import com.mygdx.drop.gameobjects.Bird;
+import com.mygdx.drop.gameobjects.ScrollHandler;
+import com.mygdx.drop.zbhelpers.AssetLoader;
 
 public class GameWorld {
+    private Bird bird;
 
-    private Rectangle rect = new Rectangle(0, 0, 17, 12);
+    private ScrollHandler scroller;
+
+    private boolean isAlive = true;
+
+
+    public GameWorld(int midPointY) {
+
+        bird = new Bird(33, midPointY - 5, 17, 12);
+
+        scroller = new ScrollHandler(midPointY + 66);
+
+    }
 
     public void update(float delta) {
-        Gdx.app.log("GameWorld", "update");
-        rect.x++;
 
-        if (rect.x > 137) {
-            rect.x = 0;
-            //rect.y = 50;
+        bird.update(delta);
+        scroller.update(delta);
+
+        if (isAlive && scroller.collides(bird)) {
+            scroller.stop();
+            AssetLoader.dead.play();
+            isAlive = false;
         }
     }
 
-    /* Метод для доступа к react
-    * */
-    public Rectangle getRect() {
-        return rect;
+    public Bird getBird() {
+        return bird;
     }
+
+    public ScrollHandler getScroller() {
+        return scroller;
+    }
+
 }
