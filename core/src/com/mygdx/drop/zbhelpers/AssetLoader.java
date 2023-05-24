@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
@@ -18,6 +19,11 @@ public class AssetLoader {
     public static TextureRegion skullUp, skullDown, bar;
 
     public static Sound dead;
+    public static Sound flap;
+    public static Sound coin;
+
+    public static BitmapFont font, shadow;
+
 
     public static void load() {
 
@@ -52,12 +58,28 @@ public class AssetLoader {
         bar.flip(false, true);
 
         dead = Gdx.audio.newSound(Gdx.files.internal("data/dead.wav"));
+        flap = Gdx.audio.newSound(Gdx.files.internal("data/dead.wav"));
+        coin = Gdx.audio.newSound(Gdx.files.internal("data/dead.wav"));
+
+        font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
+
+        shadow = new BitmapFont(Gdx.files.internal("data/shadow.fnt"));
+        shadow.getScaleX();
+        shadow.getScaleY();
 
     }
 
     public static void dispose() {
         // Мы должны избавляться от текстур, когда заканчивает работать с объектом в котором есть текстуры
         texture.dispose();
+
+        dead.dispose();
+        flap.dispose();
+        coin.dispose();
+
+        font.dispose();
+        shadow.dispose();
+
     }
 
 }

@@ -17,6 +17,10 @@ public class Pipe extends Scrollable {
 
     private float groundY;
 
+    private boolean isScored = false;
+
+
+
     // Когда констуктор Pipe вызван – вызовите конструтор родителя (Scrollable)
     public Pipe(float x, float y, int width, int height, float scrollSpeed, float groundY) {
 
@@ -67,10 +71,17 @@ public class Pipe extends Scrollable {
 
     @Override
     public void reset(float newX) {
-        // вызовите reset метод в родительском классе (Scrollable)
         super.reset(newX);
-        // Измените высоту на случайное значение
         height = r.nextInt(90) + 15;
+        isScored = false;
+    }
+
+    public boolean isScored() {
+        return isScored;
+    }
+
+    public void setScored(boolean b) {
+        isScored = b;
     }
 
     public Rectangle getSkullUp() {

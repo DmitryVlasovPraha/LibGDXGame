@@ -152,6 +152,8 @@ public class GameRenderer {
         batcher.disableBlending();
         batcher.draw(bg, 0, midPointY + 23, 136, 43);
 
+
+
         // 1. Отрисовка Grass
         drawGrass();
 
@@ -173,6 +175,17 @@ public class GameRenderer {
                     bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(),
                     1, 1, bird.getRotation());
         }
+
+
+        String score = myWorld.getScore() + "";
+
+        // Сначала отрисовываем тень
+        AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2)
+                - (3 * score.length()), 12);
+        // Отрисуем сам текст
+        AssetLoader.font.draw(batcher, "" + myWorld.getScore(), (136 / 2)
+                - (3 * score.length() - 1), 11);
+
 
         batcher.end();
 
