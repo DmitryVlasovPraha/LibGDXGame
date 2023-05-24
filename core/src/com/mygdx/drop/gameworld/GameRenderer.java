@@ -27,13 +27,11 @@ public class GameRenderer {
     private int midPointY;
     private int gameHeight;
 
-    // Игровые объекты
     private Bird bird;
     private ScrollHandler scroller;
     private Grass frontGrass, backGrass;
     private Pipe pipe1, pipe2, pipe3;
 
-    // Игровые Assets
     private TextureRegion bg, grass;
     private Animation birdAnimation;
     private TextureRegion birdMid, birdDown, birdUp;
@@ -53,7 +51,6 @@ public class GameRenderer {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
 
-        // Вызываем вспомогательные методы, чтобы проинициализировать переменные класса
         initGameObjects();
         initAssets();
     }
@@ -81,7 +78,6 @@ public class GameRenderer {
     }
 
     private void drawGrass() {
-        // Отрисовка травы
         batcher.draw(grass, frontGrass.getX(), frontGrass.getY(),
                 frontGrass.getWidth(), frontGrass.getHeight());
         batcher.draw(grass, backGrass.getX(), backGrass.getY(),
@@ -89,9 +85,6 @@ public class GameRenderer {
     }
 
     private void drawSkulls() {
-        // Временный код, измените за кашу :)
-        // Мы исправим это когда закончим с классом Pipe.
-
         batcher.draw(skullUp, pipe1.getX() - 1,
                 pipe1.getY() + pipe1.getHeight() - 14, 24, 14);
         batcher.draw(skullDown, pipe1.getX() - 1,
@@ -109,8 +102,6 @@ public class GameRenderer {
     }
 
     private void drawPipes() {
-        // Временный код, измените за кашу :)
-        // Мы исправим это когда закончим с классом Grass.
         batcher.draw(bar, pipe1.getX(), pipe1.getY(), pipe1.getWidth(),
                 pipe1.getHeight());
         batcher.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45,
@@ -134,15 +125,12 @@ public class GameRenderer {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        // Отрисуем задний фон
         shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
         shapeRenderer.rect(0, 0, 136, midPointY + 66);
 
-        // Отрисуем техническую Grass
         shapeRenderer.setColor(111 / 255.0f, 186 / 255.0f, 45 / 255.0f, 1);
         shapeRenderer.rect(0, midPointY + 66, 136, 11);
 
-        // Отрисуем техническую Dirt
         shapeRenderer.setColor(147 / 255.0f, 80 / 255.0f, 27 / 255.0f, 1);
         shapeRenderer.rect(0, midPointY + 77, 136, 52);
 
@@ -152,16 +140,11 @@ public class GameRenderer {
         batcher.disableBlending();
         batcher.draw(bg, 0, midPointY + 23, 136, 43);
 
-
-
-        // 1. Отрисовка Grass
         drawGrass();
 
-        // 2. Отрисовка Pipes
         drawPipes();
         batcher.enableBlending();
 
-        // 3. Отрисовка Skulls (требуется включить прозрачность)
         drawSkulls();
 
         if (bird.shouldntFlap()) {
@@ -177,18 +160,37 @@ public class GameRenderer {
         }
 
 
-        String score = myWorld.getScore() + "";
+        // ВРЕМЕННЫЙ КОД! Изменим позже:
 
-        // Сначала отрисовываем тень
-        AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2)
-                - (3 * score.length()), 12);
-        // Отрисуем сам текст
-        AssetLoader.font.draw(batcher, "" + myWorld.getScore(), (136 / 2)
-                - (3 * score.length() - 1), 11);
+        if (myWorld.isReady()) {
+            // Отрисуем сначала тень
+            AssetLoader.shadow.draw(batcher, "Touch me", (136 / 2)
+                    - (42), 76);
+            // Отрисуем сам текст
+            AssetLoader.font.draw(batcher, "Touch me", (136 / 2)
+                    - (42 - 1), 75);
+        } else {
 
+            if (myWorld.isGameOver()) {
+                AssetLoader.shadow.draw(batcher, "Game Over", 25, 56);
+                AssetLoader.font.draw(batcher, "Game Over", 24, 55);
+
+                AssetLoader.shadow.draw(batcher, "Try again?", 23, 76);
+                AssetLoader.font.draw(batcher, "Try again?", 24, 75);
+
+
+
+            }
+
+            String score = myWorld.getScore() + "";
+
+            AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2)
+                    - (3 * score.length()), 12);
+            AssetLoader.font.draw(batcher, "" + myWorld.getScore(), (136 / 2)
+                    - (3 * score.length() - 1), 11);
+        }
 
         batcher.end();
 
     }
-
 }

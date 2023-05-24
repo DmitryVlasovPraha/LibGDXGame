@@ -2,13 +2,18 @@ package com.mygdx.drop.zbhelpers;
 
 import com.badlogic.gdx.InputProcessor;
 import com.mygdx.drop.gameobjects.Bird;
+import com.mygdx.drop.gameworld.GameWorld;
 
 public class InputHandler implements InputProcessor {
 
     private Bird myBird;
 
-    public InputHandler(Bird bird) {
-        myBird = bird;
+    private GameWorld myWorld;
+
+
+    public InputHandler(GameWorld myWorld) {
+        this.myWorld = myWorld;
+        myBird = myWorld.getBird();
     }
 
     @Override
@@ -28,7 +33,18 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        if (myWorld.isReady()) {
+            myWorld.start();
+        }
+
         myBird.onClick();
+
+        if (myWorld.isGameOver()) {
+            // Обнулим все перменные, перейдем в GameState.READ
+            myWorld.restart();
+        }
+
         return true;
     }
 

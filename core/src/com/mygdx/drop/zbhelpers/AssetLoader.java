@@ -1,6 +1,7 @@
 package com.mygdx.drop.zbhelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -24,6 +25,7 @@ public class AssetLoader {
 
     public static BitmapFont font, shadow;
 
+    public static Preferences prefs;
 
     public static void load() {
 
@@ -67,6 +69,14 @@ public class AssetLoader {
         shadow.getScaleX();
         shadow.getScaleY();
 
+        // Создайте (или получите ранее созданный) файл preferences
+        prefs = Gdx.app.getPreferences("ZombieBird");
+
+        // Создадим переменую для хранения лучшего счета со значением по умолчанию 0
+        if (!prefs.contains("highScore")) {
+            prefs.putInteger("highScore", 0);
+        }
+
     }
 
     public static void dispose() {
@@ -80,6 +90,17 @@ public class AssetLoader {
         font.dispose();
         shadow.dispose();
 
+    }
+
+    // Ролучает на вход значение для hishScore и сохраняет в файл
+    public static void setHighScore(int val) {
+        prefs.putInteger("highScore", val);
+        prefs.flush();
+    }
+
+    // Возвращает текущее значение hishScore
+    public static int getHighScore() {
+        return prefs.getInteger("highScore");
     }
 
 }
